@@ -1,7 +1,3 @@
-Here's a well-structured README file for your **Vehicle Parking Management System**:
-
----
-
 # Vehicle Parking Management System 🚗🏍️🚚
 
 This is a **C++ project** that simulates a vehicle parking management system using **object-oriented programming (OOP)** principles, specifically hierarchical inheritance. It handles the parking and unparking of different types of vehicles, such as cars, trucks, and motorcycles, in a parking lot with a fixed capacity.
