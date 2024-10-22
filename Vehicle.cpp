@@ -1,9 +1,10 @@
+//Vehicle Parking management system using heirarchical inheritance
 #include <iostream>
 using namespace std;
 
 const int MaxSlots = 20;
 
-// Base class Vehicle
+// Base class Vehicle------------------------------------------------------------------------
 class Vehicle {
    public:
       int vehicleID;
@@ -24,25 +25,23 @@ class Vehicle {
       }
 };
 
-// Derived class Car
+// Derived classes-------------------------------------------------------------------
 class Car : public Vehicle {
    public:
-      Car(int id) : Vehicle(id, "Car") {}
+      Car(int id) : Vehicle(id, "Car") {}//contructor
 };
 
-// Derived class Truck
 class Truck : public Vehicle {
     public:
-       Truck(int id) : Vehicle(id, "Truck") {}
+       Truck(int id) : Vehicle(id, "Truck") {}//contructor
 };
 
-// Derived class Motorcycle
 class Motorcycle : public Vehicle {
     public:
-       Motorcycle(int id) : Vehicle(id, "Motorcycle") {}
+       Motorcycle(int id) : Vehicle(id, "Motorcycle") {}//contructor
 };
 
-// ParkingLot class to manage parking and unparking
+// ParkingLot class to manage parking and unparking----------------------------------------------
 class ParkingLot {
     Vehicle* slots[MaxSlots];
 
@@ -56,18 +55,24 @@ class ParkingLot {
        void park(Vehicle* vehicle);
        void unpark(Vehicle* vehicle);
        Vehicle* findVehicleById(int id);
-       void showAllParkedVehicles(); // New method to show all parked vehicles
+       void showAllParkedVehicles();
 };
 
 void ParkingLot::park(Vehicle* vehicle) {
+    // Check if the vehicle is already parked
+    if (findVehicleById(vehicle->vehicleID)) {
+        cout << "Vehicle with ID " << vehicle->vehicleID << " is already parked!" << endl;
+        return;
+    }
+
     for (int i = 0; i < MaxSlots; i++) {
-        if (slots[i] == NULL) { // Find an empty slot
+        if (slots[i] == NULL) {
             slots[i] = vehicle;
             vehicle->park();
             return;
         }
     }
-    cout << "Parking lot is full!!!" << endl;
+    cout << "Parking lot is full! Could not park " << vehicle->vehicleType << " with ID " << vehicle->vehicleID << endl;
 }
 
 void ParkingLot::unpark(Vehicle* vehicle) {
@@ -75,13 +80,13 @@ void ParkingLot::unpark(Vehicle* vehicle) {
         if (slots[i] == vehicle) {
             slots[i] = NULL;
             vehicle->unpark();
+            delete vehicle; // Free memory when vehicle is unparked
             return;
         }
     }
     cout << "Vehicle not found in the parking lot!" << endl;
 }
 
-// Method to find a vehicle by its ID
 Vehicle* ParkingLot::findVehicleById(int id) {
     for (int i = 0; i < MaxSlots; i++) {
         if (slots[i] && slots[i]->vehicleID == id) {
@@ -91,7 +96,6 @@ Vehicle* ParkingLot::findVehicleById(int id) {
     return NULL;
 }
 
-// Method to show all parked vehicles
 void ParkingLot::showAllParkedVehicles() {
     bool isEmpty = true;
     cout << "\n--- All Parked Vehicles ---" << endl;
@@ -106,7 +110,7 @@ void ParkingLot::showAllParkedVehicles() {
     }
 }
 
-// Menu-driven program
+
 int main() {
     ParkingLot lot;
     int choice;
@@ -119,10 +123,11 @@ int main() {
         cout << "2. Park a Truck" << endl;
         cout << "3. Park a Motorcycle" << endl;
         cout << "4. Unpark a Vehicle" << endl;
-        cout << "5. Show All Parked Vehicles" << endl;  // New menu option
+        cout << "5. Show All Parked Vehicles" << endl;
         cout << "6. Exit" << endl;
         cout << "Enter your choice: ";
-        cin >> choice;
+
+        cin >> choice;  // This line is important to capture the user's choice
 
         switch(choice) {
             case 1:
